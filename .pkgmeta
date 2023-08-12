@@ -1,0 +1,4 @@
+# CurseForge packager directives file.
+manual-changelog: CHANGELOG.txt
+ignore:
+  - screenshots
