@@ -1,6 +1,6 @@
 # Simple Raid Lockouts by bencvt
 
-Keep track of your character's lockouts without having to switch or dig through addon menus.
+Keep track of your characters' lockouts without having to switch or dig through addon menus.
 
 This addon/plugin is for World of Warcraft (Wrath Classic).
 **It requires the [Nova Instance Tracker](https://www.curseforge.com/wow/addons/nova-instance-tracker) addon.**
