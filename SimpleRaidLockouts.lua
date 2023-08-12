@@ -198,8 +198,8 @@ local function showRaidLockouts()
           end
         end
       end
-      tsort(extraLockouts)
     end
+    tsort(extraLockouts)
     resetColor()
     local text = ""
     for _, v in pairs(CURRENT_RAIDS) do
