@@ -1,5 +1,8 @@
-v1.0.0:
-  - initial release
+v1.1.1:
+  - fix a couple NWB dungeon names
 
 v1.1.0:
   - add dungeon lockouts
+
+v1.0.0:
+  - initial release
