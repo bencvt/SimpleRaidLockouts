@@ -279,3 +279,12 @@ SlashCmdList["SRL"] = slashCommand
 
 SLASH_LO1 = "/lo"
 SlashCmdList["LO"] = slashCommand
+
+SLASH_LOD1 = "/lod"
+SlashCmdList["LOD"] = function(args)
+  if not args or args == "" then
+    showDungeonLockouts()
+  else
+    printHelp()
+  end
+end
