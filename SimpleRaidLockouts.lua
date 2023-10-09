@@ -181,10 +181,19 @@ local function colorClass(charName)
 end
 
 
+local function printHeader(charNames, message)
+  if #charNames == 0 then
+    print(PREFIX.." you have no max-level characters on this realm")
+  else
+    print(PREFIX..(message or ""))
+  end
+end
+
+
 local function showRaidLockouts()
   if isMissingAddon() then return end
-  print(PREFIX)
   local charNames = getSortedMaxLevelCharNames()
+  printHeader(charNames)
   for _, charName in pairs(charNames) do
     local allInstanceData = getSavedInstances(charName)
     local lockouts = {}
@@ -222,12 +231,12 @@ end
 
 local function showDungeonLockouts()
   if isMissingAddon() then return end
+  local message = " Dungeons:"
   if lookupDailyDungeons() then
-    print(PREFIX..COLOR_HIGHLIGHT_DAILY_HEROIC.." Daily H"..COLOR_HIGHLIGHT_DAILY_NORMAL.."/N dungeons:|r")
-  else
-    print(PREFIX.." Dungeons:")
+    message = COLOR_HIGHLIGHT_DAILY_HEROIC.." Daily H"..COLOR_HIGHLIGHT_DAILY_NORMAL.."/N dungeons:|r"
   end
   local charNames = getSortedMaxLevelCharNames()
+  printHeader(charNames, message)
   for _, charName in pairs(charNames) do
     local allInstanceData = getSavedInstances(charName)
     local lockouts = {}
