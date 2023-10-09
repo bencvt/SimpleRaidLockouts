@@ -1,4 +1,5 @@
 v1.1.2:
+  - update for Wrath Classic phase 3
   - add /lod shorthand for /lo dungeon
   - print message when player has no max level characters on the current realm
 
