@@ -1,7 +1,7 @@
 ## Interface: 30403
 ## Title: Simple Raid Lockouts
 ## Author: bencvt
-## Version: 1.1.2
+## Version: 1.1.3
 ## Notes: Adds a slash command (/lo or /srl) to print all max level raid lockouts for all your characters, and /lo d for dungeon lockouts.
 ## DefaultState: Enabled
 
