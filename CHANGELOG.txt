@@ -1,3 +1,7 @@
+v1.1.4:
+  - update for Wrath Classic phase 5
+  - remove daily dungeons
+
 v1.1.2:
   - update for Wrath Classic phase 3
   - add /lod shorthand for /lo dungeon

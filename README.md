@@ -13,8 +13,6 @@ This is equivalent to clicking the NIT mini-map button, then Lockouts, but it's 
 
 You can also use `/lo d` to print all max level heroic dungeon lockouts for all your characters.
 
-If you have the **[Nova World Buffs](https://www.curseforge.com/wow/addons/nova-world-buffs)** addon installed, the daily heroic/normal dungeons will be highlighted as well.
-
 ## Examples
 
 Raids:  

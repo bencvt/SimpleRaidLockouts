@@ -7,20 +7,9 @@ local OLD_KINGDOM_ABBREV = "ok"
 
 
 -- Dungeons are ordered to match the LFG tool.
-local CURRENT_DUNGEONS = { OLD_KINGDOM_ABBREV, "an", "dtk", "gun", "hol", "hos", "cos", "nex", "ocu", "toc", "uk", "up", "vh", }
-local CURRENT_RAIDS = { "voa10", "voa25", "ony10", "ony25", "toc10", "toc25", }
+local CURRENT_DUNGEONS = { OLD_KINGDOM_ABBREV, "an", "dtk", "gun", "hol", "hos", "cos", "nex", "ocu", "toc", "uk", "up", "vh", "fos", "pos", "hor" }
+local CURRENT_RAIDS = { "voa10", "voa25", "rs10", "rs25", "icc10", "icc25", }
 local _, _, _, version = GetBuildInfo()
-if version > 30402 then
-  -- Assuming Blizzard bumps the interface version every classic phase.
-  tinsert(CURRENT_DUNGEONS, "fos")
-  tinsert(CURRENT_DUNGEONS, "pos")
-  tinsert(CURRENT_DUNGEONS, "hor")
-  if version > 30403 then
-    CURRENT_RAIDS = { "voa10", "voa25", "rs10", "rs25", "icc10", "icc25", }
-  else
-    CURRENT_RAIDS = { "voa10", "voa25", "icc10", "icc25", }
-  end
-end
 local IS_CURRENT_DUNGEON = {}
 for _, v in pairs(CURRENT_DUNGEONS) do
   IS_CURRENT_DUNGEON[v] = true
@@ -110,40 +99,9 @@ local function getSavedInstances(charName)
 end
 
 
--- Rely on the Nova World Buffs addon (optional dependency) to get daily dungeon quest data.
--- NWB broadcasts this data on addon channels whenever someone visits a quest giver.
--- Definitely not worth duplicating that infrastructure.
-local SECONDS_IN_A_DAY = 60 * 60 * 24
-local dailyHeroic = nil
-local dailyNormal = nil
-local function lookupDailyDungeons()
-  dailyHeroic = nil
-  dailyNormal = nil
-  local NWB = LibStub("AceAddon-3.0"):GetAddon("NovaWorldBuffs", true)
-  if not NWB or not NWB.data then
-    return false
-  end
-  if NWB.data.tbcHD and NWB.data.tbcHDT and GetServerTime() - NWB.data.tbcHDT < SECONDS_IN_A_DAY then
-    local questData = NWB:getHeroicDailyData(NWB.data.tbcHD);
-    if questData then
-      dailyHeroic = DUNGEON_ABBREVS[questData.dungeon]
-    end
-  end
-  if NWB.data.tbcDD and NWB.data.tbcDDT and GetServerTime() - NWB.data.tbcDDT < SECONDS_IN_A_DAY then
-    local questData = NWB:getDungeonDailyData(NWB.data.tbcDD);
-    if questData then
-      dailyNormal = DUNGEON_ABBREVS[questData.dungeon]
-    end
-  end
-  return true
-end
-
-
 -- Logic to output color codes only when needed.
 local COLOR_DARK = "|cff667676"
 local COLOR_HIGHLIGHT = "|cff1eff0c"
-local COLOR_HIGHLIGHT_DAILY_HEROIC = "|cffffb000"
-local COLOR_HIGHLIGHT_DAILY_NORMAL = "|cffffffff"
 local currentColor = nil
 local function resetColor()
   currentColor = nil
@@ -158,19 +116,6 @@ end
 local function colorHighlight()
   if currentColor ~= COLOR_HIGHLIGHT then
     currentColor = COLOR_HIGHLIGHT
-    return currentColor
-  end
-  return ""
-end
-local function colorHighlightDungeon(name)
-  local color = COLOR_HIGHLIGHT
-  if name == dailyHeroic then
-    color = COLOR_HIGHLIGHT_DAILY_HEROIC
-  elseif name == dailyNormal then
-    color = COLOR_HIGHLIGHT_DAILY_NORMAL
-  end
-  if currentColor ~= color then
-    currentColor = color
     return currentColor
   end
   return ""
@@ -232,9 +177,6 @@ end
 local function showDungeonLockouts()
   if isMissingAddon() then return end
   local message = " Dungeons:"
-  if lookupDailyDungeons() then
-    message = COLOR_HIGHLIGHT_DAILY_HEROIC.." Daily H"..COLOR_HIGHLIGHT_DAILY_NORMAL.."/N dungeons:|r"
-  end
   local charNames = getSortedMaxLevelCharNames()
   printHeader(charNames, message)
   for _, charName in pairs(charNames) do
@@ -254,7 +196,7 @@ local function showDungeonLockouts()
       if lockouts[v] then
         text = text.." "..colorDark()..v
       else
-        text = text.." "..colorHighlightDungeon(v)..v
+        text = text.." "..colorHighlight()..v
       end
     end
     text = text.." "..colorClass(charName)..charName.."|r"
@@ -267,8 +209,7 @@ local function printHelp()
   isMissingAddon()
   print(PREFIX.." "..COLOR_HIGHLIGHT.."/lo|r and "..COLOR_HIGHLIGHT.."/srl|r are equivalent. Usage:")
   print(" "..COLOR_HIGHLIGHT.."/lo|r - show raid lockouts")
-  print(" "..COLOR_HIGHLIGHT.."/lo d|r or "..COLOR_HIGHLIGHT.."/lo dungeons|r - show dungeon lockouts; if Nova World Buffs is installed, the "
-    ..COLOR_HIGHLIGHT_DAILY_HEROIC.."daily heroic|r"..COLOR_HIGHLIGHT_DAILY_NORMAL.."/normal".."|r will be highlighted")
+  print(" "..COLOR_HIGHLIGHT.."/lo d|r or "..COLOR_HIGHLIGHT.."/lo dungeons|r - show dungeon lockouts")
 end
 
 
